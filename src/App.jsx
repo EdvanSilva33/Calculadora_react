@@ -4,36 +4,47 @@ import styles from './App.module.css'
 function App() {
   const [altura, setAltura] = useState('');
   const [peso, setPeso] = useState('');
-  const [imc, setIMc] = useState(null)
+  const [imc, setImc] = useState(null)
   const [resultado, setResultado] = useState('')
+  const [nome, setNome] = useState('')
 
   const calcular = () => {
     if (altura && peso) {
       const alturaMetros = altura / 100;
       const imceCalculado = peso / (alturaMetros * alturaMetros);
-      setIMc(imceCalculado.toFixed(2))
+      setImc(imceCalculado.toFixed(2))
     
       if (imceCalculado < 19.3) {
-        setResultado  ('Magreza Extrema');
+        setResultado  (`Magreza Extrema, ${nome} procure um medico pode está representar alguma doença que está provocando o emagrecimento ou desnutrição.`);
       } else if (imceCalculado <= 25.3) {
-        setResultado ( 'Normal');
+        setResultado ( `Parabens ${nome} você estar dentro da faixa de peso normal significa ter um peso considerado adequado para sua altura.` );
 
       } else if (imceCalculado < 30.3) {
-        setResultado  ('Sobrepeso');
+        setResultado  (` Opa ! Sobrepeso, ${nome} O sobrepeso é uma condição em que a pessoa pesa mais do que é considerado adequado para aquela altura`);
       } else {
-        setResultado  ('Obesidade Morbida');
+        setResultado  (`Cuidado! Obesidade Morbida, ${nome} isso significa que você está precisando urgente de uma dieta e exercicios fisico. `);
       }
-
-    
-      
+  
     }
   };
-
+  const limparResultados = () => {
+    setNome('');
+    setAltura('');
+    setPeso('');
+    setImc(null);
+    setResultado('');
+  };
   return (
     <div className={styles.container}>
 
       <div className={styles.content}>
         <h1>Calculadora de IMC</h1>
+        <div className={styles.altura}>
+          <label>Nome :</label>
+          <input type="text" value={nome} onChange={(e) => setNome(e.target.value)} placeholder='Digite Seu nome' />
+
+
+        </div>
         <div className={styles.altura}>
           <label> Altura (cm) :</label>
           <input type="number" value={altura} onChange={(e) => setAltura(e.target.value)} placeholder='Digite a altura ex: 1.70 = 170' />
@@ -51,15 +62,15 @@ function App() {
 
       <div className={styles.resultdo}>
         <h2>Resultado </h2>
-        {imc !== null &&(
-          <div>
-            <p>seu : {imc}</p>
-            <p>{resultado}</p>
-            </div>
+        
+       <p className={styles.cliente}>Nome: {nome}</p>
+       <p>Resultado:</p>
+       <p className={styles.resultados}> {resultado}</p>
+       <div className={styles.botoes}>
+       <span className={styles.imc}>Seu IMC é: {imc}</span>
 
-        )}
-     
-       
+       <button className={styles.limpar} onClick={limparResultados}>Limpar Resultados</button>
+       </div>
       </div>
     </div>
   )
